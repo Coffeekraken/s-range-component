@@ -4,7 +4,7 @@ export default class Component extends SWebComponent {
 
 	/**
 	 * Default props
-	 * @definition 		SWebComponent.getDefaultProps
+	 * @definition 		SWebComponent.defaultProps
 	 */
 	static get defaultProps() {
 		return {
