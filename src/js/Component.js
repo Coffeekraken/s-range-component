@@ -5,6 +5,7 @@ export default class Component extends SWebComponent {
 	/**
 	 * Default props
 	 * @definition 		SWebComponent.defaultProps
+	 * @protected
 	 */
 	static get defaultProps() {
 		return {
@@ -14,6 +15,7 @@ export default class Component extends SWebComponent {
 	/**
 	 * Physical props
 	 * @definition 		SWebComponent.physicalProps
+	 * @protected
 	 */
 	static get physicalProps() {
 		return [];
@@ -21,6 +23,7 @@ export default class Component extends SWebComponent {
 
 	/**
 	 * Css
+	 * @protected
 	 */
 	static css(componentName, componentNameDash) {
 		return `
@@ -32,7 +35,8 @@ export default class Component extends SWebComponent {
 
 	/**
 	 * Component will mount
-	 * @definition 		SWebComponent.componentWillMount
+ 	 * @definition 		SWebComponent.componentWillMount
+	 * @protected
 	 */
 	componentWillMount() {
 		super.componentWillMount();
@@ -41,6 +45,7 @@ export default class Component extends SWebComponent {
 	/**
 	 * Mount component
 	 * @definition 		SWebComponent.componentMount
+	 * @protected
 	 */
 	componentMount() {
 		super.componentMount();
@@ -49,6 +54,7 @@ export default class Component extends SWebComponent {
 	/**
 	 * Component unmount
 	 * @definition 		SWebComponent.componentUnmount
+	 * @protected
 	 */
 	componentUnmount() {
 		super.componentUnmount();
@@ -57,6 +63,7 @@ export default class Component extends SWebComponent {
 	/**
 	 * Component will receive prop
 	 * @definition 		SWebComponent.componentWillReceiveProp
+	 * @protected
 	 */
 	componentWillReceiveProp(name, newVal, oldVal) {
 		switch(name) {
@@ -67,6 +74,7 @@ export default class Component extends SWebComponent {
 	 * Render the component
 	 * Here goes the code that reflect the this.props state on the actual html element
 	 * @definition 		SWebComponent.render
+	 * @protected
 	 */
 	render() {
 		super.render();
