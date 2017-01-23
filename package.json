@@ -8,12 +8,13 @@
     "dist.js": "babel src -d dist",
     "dist.watch": "concurrently --kill-others \"npm run dist.watch.js\"",
     "dist.watch.js": "nodemon -w src -e js -x \"npm run dist.js\"",
-    "demo": "npm run demo.css && npm run demo.js && open ./demo/index.html",
+    "demo": "npm run demo.css && npm run demo.js && npm run demo.server",
     "demo.css": "node-sass demo/src/sass/style.scss demo/dist/css/style.css",
     "demo.js": "npm run dist.js && webpack",
     "demo.watch": "concurrently --kill-others \"npm run demo.watch.css\" \"npm run demo.watch.js\"",
     "demo.watch.css": "nodemon -w demo/src -w src -e scss -x \"npm run demo.css\"",
     "demo.watch.js": "nodemon -w demo/src -w src -e js -x \"npm run demo.js\"",
+    "demo.server": "http-server demo -o",
     "doc": "rm -rf doc && npm run doc.js",
     "doc.js": "coffeekraken-docblock-to-markdown -f 'src/**/*.js' -d doc --remove-path src/",
     "test": "node_modules/coffeekraken-testing-stack/run"
@@ -46,9 +47,9 @@
     "coffeekraken-docblock-to-markdown": "git+https://github.com/Coffeekraken/docblock-to-markdown.git#release/0.0.1",
     "coffeekraken-testing-stack": "git+https://github.com/Coffeekraken/testing-stack.git#release/0.0.1",
     "concurrently": "^3.1.0",
+    "http-server": "^0.9.0",
     "node-sass": "^4.0.0",
     "nodemon": "^1.11.0",
-    "open": "0.0.5",
     "webcomponents.js": "^0.7.23",
     "webpack": "^1.14.0"
   }
