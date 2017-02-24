@@ -12,5 +12,10 @@ module.exports = {
 			exclude: /(bower_components|node_modules)/,
 			loader: 'babel-loader'
 		}]
+	},
+	resolve: {
+		alias: {
+			'coffeekraken-sugar': '/Users/olivierbossel/data/web/coffeekraken/sugar/dist'
+		}
 	}
 }
