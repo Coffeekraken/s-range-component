@@ -8,7 +8,7 @@
 2. [Get Started](#readme-get-started)
 3. [Javascript API](doc/api/js/{ComponentName}.md)
 4. [SASS API](doc/api/scss)
-5. [Sugar Web Components Documentation](http://github.com/coffeekraken/sugar/doc/webcomponent.md)
+5. [Sugar Web Components Documentation](https://github.com/Coffeekraken/sugar/blob/master/doc/webcomponent.md)
 6. [Browsers support](#readme-browsers-support)
 7. [Contribute](#readme-contribute)
 8. [Who are Coffeekraken?](#readme-who-are-coffeekraken)
@@ -53,20 +53,20 @@ Then simply use it inside your html like so:
 This is an open source project and will ever be! You are more that welcomed to contribute to his development and make it more awesome every day.
 To do so, you have several possibilities:
 
-1. [Share the love ❤️](https://github.com/coffeekraken/coffeekraken/contribute.md#contribute-share-the-love)
-2. [Declare issues](https://github.com/coffeekraken/coffeekraken/contribute.md#contribute-declare-issues)
-3. [Fix issues](https://github.com/coffeekraken/coffeekraken/contribute.md#contribute-fix-issues)
-4. [Add features](https://github.com/coffeekraken/coffeekraken/contribute.md#contribute-add-features)
-5. [Build web component](https://github.com/coffeekraken/coffeekraken/contribute.md#contribute-build-web-component)
+1. [Share the love ❤️](https://github.com/Coffeekraken/coffeekraken/blob/master/contribute.md#contribute-share-the-love)
+2. [Declare issues](https://github.com/Coffeekraken/coffeekraken/blob/master/contribute.md#contribute-declare-issues)
+3. [Fix issues](https://github.com/Coffeekraken/coffeekraken/blob/master/contribute.md#contribute-fix-issues)
+4. [Add features](https://github.com/Coffeekraken/coffeekraken/blob/master/contribute.md#contribute-add-features)
+5. [Build web component](https://github.com/Coffeekraken/coffeekraken/blob/master/contribute.md#contribute-build-web-component)
 
 <a id="readme-who-are-coffeekraken"></a>
 ## Who are Coffeekraken
 
 We try to be **some cool guys** that build **some cool tools** to make our (and yours hopefully) **every day life better**.  
 
-#### [More on who we are](https://github.com/coffeekraken/coffeekraken/who-are-we.md)
+#### [More on who we are](https://github.com/Coffeekraken/coffeekraken/blob/master/who-are-we.md)
 
 <a id="readme-license"></a>
 ## License
 
-The code is available under the [MIT license](LICENSE.txt). This mean that you can use, modify, or do whatever you want with it. This mean also that it is shipped to you for free, so don't be a hater and if you find some issues, etc... feel free to [contribute](https://github.com/coffeekraken/coffeekraken/contribute.md) instead of sharing your frustrations on social networks like an asshole...
+The code is available under the [MIT license](LICENSE.txt). This mean that you can use, modify, or do whatever you want with it. This mean also that it is shipped to you for free, so don't be a hater and if you find some issues, etc... feel free to [contribute](https://github.com/Coffeekraken/coffeekraken/blob/master/contribute.md) instead of sharing your frustrations on social networks like an asshole...
