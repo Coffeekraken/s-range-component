@@ -27,7 +27,7 @@ npm install coffeekraken-s-{component-name} --save
 First, import the component into your javascript file like so:
 
 ```js
-import SSelectComponent from 'coffeekraken-s-{component-name}'
+import ComponentName from 'coffeekraken-s-{component-name}'
 ```
 
 Then simply use it inside your html like so:
