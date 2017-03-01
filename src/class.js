@@ -1,2 +1,2 @@
-import Component from './js/Component';
-export default Component;
+import STemplateComponent from './js/STemplateComponent';
+export default STemplateComponent;
