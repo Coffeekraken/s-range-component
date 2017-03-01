@@ -1,4 +1,4 @@
-# s-{component-name} <small>{version}</small> [![Build Status](https://travis-ci.org/Coffeekraken/s-{component-name}-component.svg?branch=release/{version})](https://travis-ci.org/Coffeekraken/s-{component-name}-component)
+# Coffeekraken s-{component-name} <small>{version}</small> [![Build Status](https://travis-ci.org/Coffeekraken/s-{component-name}-component.svg?branch=release/{version})](https://travis-ci.org/Coffeekraken/s-{component-name}-component)
 
 {component-description}
 
