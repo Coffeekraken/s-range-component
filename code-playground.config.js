@@ -23,7 +23,7 @@ module.exports = {
 			data : `
 				<div class="container">
 					<h1 class="h1 m-b-small">
-						{component-name}
+						Coffeekraken s-{component-name}
 					<h1>
 					<p class="p m-b-bigger">
 						{component-description}
@@ -53,7 +53,7 @@ module.exports = {
 			language : 'js',
 			data : `
 				import 'webcomponents.js/webcomponents-lite'
-				import {ComponentName} from './dist/index'
+				import Component from './dist/index'
 			`
 		}
 	}

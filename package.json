@@ -8,16 +8,22 @@
     "type": "git",
     "url": "https://github.com/coffeekraken/s-{component-name}-component"
   },
+  "watch": {
+    "dist.js": "src/**/*.js",
+    "doc.js": "src/**/*.js",
+    "doc.css": "src/**/*.scss",
+    "demo": "code-playground.config.js"
+  },
   "scripts": {
     "dist": "npm run dist.js",
     "dist.js": "babel src -d dist",
-    "dist.watch": "concurrently --kill-others \"npm run dist.watch.js\"",
-    "dist.watch.js": "nodemon -w src -e js -x \"npm run dist.js\"",
     "demo": "coffeekraken-code-playground",
     "doc": "rm -rf doc && npm run doc.js && npm run doc.css",
     "doc.js": "coffeekraken-docblock-to-markdown -f 'src/**/*.js' -d doc --remove-path src/",
     "doc.css": "coffeekraken-docblock-to-markdown -f 'src/**/*.scss' -d doc --remove-path src/",
-    "test": "node_modules/coffeekraken-testing-stack/run"
+    "test": "node_modules/coffeekraken-testing-stack/run",
+    "start": "npm-watch",
+    "watch": "npm-watch"
   },
   "keywords": [
     "webcomponent",
@@ -56,7 +62,8 @@
     "http-server": "^0.9.0",
     "node-sass": "^4.0.0",
     "nodemon": "^1.11.0",
+    "npm-watch": "^0.1.8",
     "webcomponents.js": "^0.7.24",
-    "webpack": "^1.14.0"
+    "webpack": "^2.0.0"
   }
 }
