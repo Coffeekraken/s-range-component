@@ -8,7 +8,7 @@
 2. [Install](#readme-install)
 3. [Get Started](#readme-get-started)
 4. [Javascript API](doc/api/js)
-5. [SASS API](doc/api/scss)
+5. [SASS API](doc/api/sass)
 6. [Sugar Web Components Documentation](https://github.com/Coffeekraken/sugar/blob/master/doc/webcomponent.md)
 7. [Browsers support](#readme-browsers-support)
 8. [Contribute](#readme-contribute)
