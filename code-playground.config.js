@@ -3,7 +3,7 @@ module.exports = {
 	port : 3000,
 
 	// title
-	title : 's-{component-name}',
+	title : 's-{component-name}-component',
 
 	// layout
 	layout : 'right',
@@ -23,7 +23,7 @@ module.exports = {
 			data : `
 				<div class="container">
 					<h1 class="h1 m-b-small">
-						Coffeekraken s-{component-name}
+						Coffeekraken s-{component-name}-component
 					<h1>
 					<p class="p m-b-bigger">
 						{component-description}

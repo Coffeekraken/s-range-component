@@ -1,14 +1,14 @@
-# Coffeekraken s-{component-name} <small>{version}</small> [![Build Status](https://travis-ci.org/Coffeekraken/s-{component-name}-component.svg?branch=release/{version})](https://travis-ci.org/Coffeekraken/s-{component-name}-component)
+# Coffeekraken s-{component-name}-component <small>{version}</small> [![Build Status](https://travis-ci.org/Coffeekraken/s-{component-name}-component.svg)](https://travis-ci.org/Coffeekraken/s-{component-name}-component)
 
 {component-description}
 
 ## Table of content
 
-1. **[Demo](http://components.coffeekraken.io/app/{component-name}-component)**
+1. **[Demo](http://components.coffeekraken.io/app/s-{component-name}-component)**
 2. [Install](#readme-install)
 3. [Get Started](#readme-get-started)
-4. [Javascript API](doc/api/js)
-5. [SASS API](doc/api/sass)
+4. [Javascript API](doc/js)
+5. [SASS API](doc/sass)
 6. [Sugar Web Components Documentation](https://github.com/Coffeekraken/sugar/blob/master/doc/webcomponent.md)
 7. [Browsers support](#readme-browsers-support)
 8. [Contribute](#readme-contribute)
@@ -19,7 +19,7 @@
 ## Install
 
 ```
-npm install coffeekraken-s-{component-name} --save
+npm install coffeekraken-s-{component-name}-component --save
 ```
 
 <a name="readme-get-started"></a>
@@ -28,13 +28,13 @@ npm install coffeekraken-s-{component-name} --save
 First, import the component into your javascript file like so:
 
 ```js
-import ComponentName from 'coffeekraken-s-{component-name}'
+import ComponentName from 'coffeekraken-s-{component-name}-component'
 ```
 
 Then simply use it inside your html like so:
 
 ```html
-<{component-name}></{component-name}>
+<s-{component-name}></s-{component-name}>
 ```
 
 <a id="readme-browsers-support"></a>
@@ -61,7 +61,7 @@ To do so, you have several possibilities:
 5. [Build web component](https://github.com/Coffeekraken/coffeekraken/blob/master/contribute.md#contribute-build-web-component)
 
 <a id="readme-who-are-coffeekraken"></a>
-## Who are Coffeekraken
+## Who are Coffeekraken
 
 We try to be **some cool guys** that build **some cool tools** to make our (and yours hopefully) **every day life better**.  
 
