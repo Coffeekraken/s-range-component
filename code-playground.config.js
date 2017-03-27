@@ -24,7 +24,7 @@ module.exports = {
 				<div class="container">
 					<h1 class="h1 m-b-small">
 						Coffeekraken s-{component-name}-component
-					<h1>
+					</h1>
 					<p class="p m-b-bigger">
 						{component-description}
 					</p>

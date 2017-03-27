@@ -23,7 +23,7 @@ npm install coffeekraken-s-{component-name}-component --save
 ```
 
 <a name="readme-get-started"></a>
-## Get Started
+## Get Started
 
 First, import the component into your javascript file like so:
 
@@ -38,13 +38,15 @@ Then simply use it inside your html like so:
 ```
 
 <a id="readme-browsers-support"></a>
-## Browsers support
+## Browsers support
 
 * Chrome *(latest 2)*
 * Firefox *(latest 2)*
 * Internet Explorer 10+
 * Opera *(latest 2)*
 * Safari *(latest 2)*
+
+> As browsers are automatically updated, we will keep as reference the last two versions of each but this component can work on older ones as well.
 
 > The webcomponent API (custom elements, shadowDOM, etc...) is not supported in some older browsers like IE10, etc... In order to make them work, you will need to integrate the [corresponding polyfill](https://www.webcomponents.org/polyfills).
 
