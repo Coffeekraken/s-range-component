@@ -1,12 +1,12 @@
 {
-  "name": "coffeekraken-s-{component-name}-component",
+  "name": "coffeekraken-s-range-component",
   "version": "0.0.1",
-  "description": "{component-description}",
+  "description": "Nice, easy to use, customizable and fully featured range webcomponent.",
   "main": "dist/index.js",
   "homepage": "http://coffeekraken.io",
   "repository": {
     "type": "git",
-    "url": "https://github.com/coffeekraken/s-{component-name}-component"
+    "url": "https://github.com/coffeekraken/s-range-component"
   },
   "watch": {
     "dist.js": "src/**/*.js",
@@ -21,7 +21,7 @@
     "doc": "rm -rf doc && npm run doc.js && npm run doc.css",
     "doc.js": "coffeekraken-docblock-to-markdown -f 'src/**/*.js' -d doc --remove-path src/",
     "doc.css": "coffeekraken-docblock-to-markdown -f 'src/**/*.scss' -d doc --remove-path src/",
-    "test": "node_modules/coffeekraken-testing-stack/run",
+    "test": "coffeekraken-testing-stack",
     "start": "npm-watch",
     "watch": "npm-watch"
   },
@@ -37,14 +37,17 @@
     "coffeekraken"
   ],
   "author": "Coffeekraken <hello@coffeekraken.io>",
-  "contributors": [{
-    "name": "Olivier Bossel",
-    "email": "olivier.bossel@gmail.com",
-    "url": "http://olivierbossel.com"
-  }],
+  "contributors": [
+    {
+      "name": "Olivier Bossel",
+      "email": "olivier.bossel@gmail.com",
+      "url": "http://olivierbossel.com"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
-    "coffeekraken-sugar": "https://github.com/Coffeekraken/sugar.git#release/0.0.1"
+    "coffeekraken-sugar": "https://github.com/Coffeekraken/sugar.git#release/0.0.1",
+    "nouislider": "^8.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

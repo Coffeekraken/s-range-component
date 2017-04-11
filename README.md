@@ -1,10 +1,37 @@
-# Coffeekraken s-{component-name}-component <small>{version}</small> [![Build Status](https://travis-ci.org/Coffeekraken/s-{component-name}-component.svg)](https://travis-ci.org/Coffeekraken/s-{component-name}-component)
+# Coffeekraken s-range-component <img src=".resources/coffeekraken-logo.jpg" height="25px" />
 
-{component-description}
+<p>
+	<a href="https://travis-ci.org/Coffeekraken/s-range-component">
+		<img src="https://img.shields.io/travis/Coffeekraken/s-range-component.svg?style=flat-square" />
+	</a>
+	<a href="https://www.npmjs.com/package/coffeekraken-s-range-component">
+		<img src="https://img.shields.io/npm/v/coffeekraken-s-datepicker.svg?style=flat-square" />
+	</a>
+	<a href="https://github.com/coffeekraken/s-range-component/blob/master/LICENSE.txt">
+		<img src="https://img.shields.io/npm/l/coffeekraken-s-datepicker.svg?style=flat-square" />
+	</a>
+	<!-- <a href="https://github.com/coffeekraken/s-range-component">
+		<img src="https://img.shields.io/npm/dt/coffeekraken-s-datepicker.svg?style=flat-square" />
+	</a>
+	<a href="https://github.com/coffeekraken/s-range-component">
+		<img src="https://img.shields.io/github/forks/coffeekraken/s-range-component.svg?style=social&label=Fork&style=flat-square" />
+	</a>
+	<a href="https://github.com/coffeekraken/s-range-component">
+		<img src="https://img.shields.io/github/stars/coffeekraken/s-range-component.svg?style=social&label=Star&style=flat-square" />
+	</a> -->
+	<a href="https://twitter.com/coffeekrakenio">
+		<img src="https://img.shields.io/twitter/url/http/coffeekrakenio.svg?style=social&style=flat-square" />
+	</a>
+	<a href="http://coffeekraken.io">
+		<img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=flat-square&label=coffeekraken.io&colorB=f2bc2b&style=flat-square" />
+	</a>
+</p>
+
+Nice, easy to use, customizable and fully featured range webcomponent.
 
 ## Table of content
 
-1. **[Demo](http://components.coffeekraken.io/app/s-{component-name}-component)**
+1. **[Demo](http://components.coffeekraken.io/app/s-range-component)**
 2. [Install](#readme-install)
 3. [Get Started](#readme-get-started)
 4. [Javascript API](doc/js)
@@ -19,7 +46,7 @@
 ## Install
 
 ```
-npm install coffeekraken-s-{component-name}-component --save
+npm install coffeekraken-s-range-component --save
 ```
 
 <a name="readme-get-started"></a>
@@ -28,23 +55,23 @@ npm install coffeekraken-s-{component-name}-component --save
 First, import the component into your javascript file like so:
 
 ```js
-import ComponentName from 'coffeekraken-s-{component-name}-component'
+import SRangeComponent from 'coffeekraken-s-range-component'
 ```
 
 Then simply use it inside your html like so:
 
 ```html
-<s-{component-name}></s-{component-name}>
+<input type="text" is="s-range" min="0" max="50" value="20" />
+<input type="text" is="s-range" min="20" max="50" value="20,34" />
+<input type="text" is="s-range" min="0" max="1000" value="400" step="10" />
 ```
 
 <a id="readme-browsers-support"></a>
 ## Browsers support
 
-* Chrome *(latest 2)*
-* Firefox *(latest 2)*
-* Internet Explorer 10+
-* Opera *(latest 2)*
-* Safari *(latest 2)*
+| [<img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/edge.png" alt="IE / Edge" width="16px" height="16px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/firefox.png" alt="Firefox" width="16px" height="16px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/chrome.png" alt="Chrome" width="16px" height="16px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/safari.png" alt="Safari" width="16px" height="16px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
+| --------- | --------- | --------- | --------- |
+| IE11+ | last 2 versions| last 2 versions| last 2 versions
 
 > As browsers are automatically updated, we will keep as reference the last two versions of each but this component can work on older ones as well.
 
