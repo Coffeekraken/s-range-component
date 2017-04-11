@@ -36,6 +36,15 @@
 // }
 //
 
+/**
+ * @name 	s-range
+ * This file provide all the mixins to generate component classes
+ */
+
+/**
+ * Print out the bare and style component css
+ * @param 	{List<Color>} 		[$color=default primary secondary] 		The colors to generate
+ */
 @mixin s-range-classes(
 	$colors : default primary secondary
 ) {
@@ -45,6 +54,9 @@
 	);
 }
 
+/**
+ * Print out the bare component css
+ */
 @mixin s-range-classes-bare() {
 
 	$h : 1em;
@@ -101,6 +113,10 @@
 	}
 }
 
+/**
+ * Print out the style component css
+ * @param 	{List<Color>} 		[$color=default primary secondary] 		The colors to generate
+ */
 @mixin s-range-classes-style(
 	$colors : default primary secondary
 ) {
