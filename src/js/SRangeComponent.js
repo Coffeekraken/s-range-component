@@ -10,7 +10,6 @@ import __autoCast from 'coffeekraken-sugar/js/utils/string/autoCast'
  * @extends 	SInputWebComponent
  * Nice, easy to use, customizable and fully featured range webcomponent.
  *
- * @styleguide 	Form / Range
  * @example 	html
  * <input type="text" is="s-range" min="0" max="50" value="20" />
  * <input type="text" is="s-range" min="20" max="50" value="20,34" />
