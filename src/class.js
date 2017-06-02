@@ -1,2 +1,2 @@
-import Component from './js/Component';
-export default Component;
+import SRangeComponent from './js/SRangeComponent';
+export default SRangeComponent;

@@ -2,10 +2,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _STemplateComponent = require('./js/STemplateComponent');
+var _SRangeComponent = require('./js/SRangeComponent');
 
-var _STemplateComponent2 = _interopRequireDefault(_STemplateComponent);
+var _SRangeComponent2 = _interopRequireDefault(_SRangeComponent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _STemplateComponent2.default.define('s-template', _STemplateComponent2.default);
+exports.default = _SRangeComponent2.default.define('s-range', _SRangeComponent2.default, 'input');

@@ -1,2 +1,2 @@
-import Component from './js/Component';
-export default Component.define('s-component', Component);
+import SRangeComponent from './js/SRangeComponent';
+export default SRangeComponent.define('s-range', SRangeComponent, 'input');

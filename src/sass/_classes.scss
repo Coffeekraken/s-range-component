@@ -1,20 +1,77 @@
 /**
+ * @name 	s-range
+ * This file provide all the mixins to generate component classes
+ */
+
+/**
  * Print out the bare and style component css
  * @param 	{List<Color>} 		[$color=default primary secondary] 		The colors to generate
  */
-@mixin s-component-name-classes(
+@mixin s-range-classes(
 	$colors : default primary secondary
 ) {
-	@include s-component-name-classes-bare();
-	@include s-component-name-classes-style($colors);
+	@include s-range-classes-bare();
+	@include s-range-classes-style(
+		$colors : $colors
+	);
 }
 
 /**
  * Print out the bare component css
  */
-@mixin s-component-name-classes-bare() {
-	@include s-component('s-component-name') {
+@mixin s-range-classes-bare() {
 
+	$h : 1em;
+
+	@include s-component('s-range') {
+
+		#{s-range-selector()} {
+			padding-top:.5em;
+			padding-bottom:.5em;
+
+			.#{s-component()}-base {
+				position: relative;
+				height: $h;
+
+				&:before {
+					display:block;
+					content:'';
+					width:100%; height:100%;
+					background: white;
+					position:absolute;
+					top:0; left:0;
+					z-index:-1;
+				}
+			}
+		}
+
+		@include s-range-style-container() {
+			margin-left: $h;
+			margin-right: $h;
+			cursor:pointer;
+		}
+
+		@include s-range-style-tooltip() {
+			font-size:1rem !important;
+			padding:s-lnf(padding-horizontal) s-lnf(padding-vertical);
+			border-radius: s-lnf(border-radius);
+		}
+
+		@include s-range-style-handle() {
+			width : $h * 2;
+			height : $h * 2;
+			border-radius: 50%;
+			@include s-translate(-50%, -25%);
+		}
+		@include s-range-style-handle(active) {
+			width: $h;
+			height: $h;
+			@include s-translate(-50%, 0);
+		}
+
+		@include s-range-style-handle-value(active) {
+			font-size:0;
+		}
 	}
 }
 
@@ -22,15 +79,216 @@
  * Print out the style component css
  * @param 	{List<Color>} 		[$color=default primary secondary] 		The colors to generate
  */
-@mixin s-component-name-classes-style(
+@mixin s-range-classes-style(
 	$colors : default primary secondary
 ) {
-	@include s-component('s-component-name') {
-		@each $color in $colors {
-			$sel : ".#{s-component()}--#{$color}";
-			#{s-selector($sel)} {
 
+	// parse properties
+	@if $_sugar-test-arguments {
+		// $colors : s-test-argument('s-range-style','colors',map-keys(s-setting('colors')),$colors);
+	}
+
+	@include s-component('s-range') {
+
+		@include s-range-style-base() {
+			border-radius: s-lnf(border-radius);
+			&:before {
+				border-radius: s-lnf(border-radius);
+				@include s-transition(fast background-color);
 			}
+		}
+
+		@include s-range-style-connect() {
+			border-radius: s-lnf(border-radius);
+			@include s-transition(fast background-color);
+		}
+
+		@include s-range-style-handle() {
+			@include s-transition(fast);
+
+			&:before {
+				content:'';
+				display:block;
+				width:100%;
+				height:100%;
+				position:absolute;
+				top:50%; left:50%;
+				@include s-translate(-50%,-50%);
+				border-radius: 50%;
+				@include s-transition(fast);
+			}
+		}
+		@include s-range-style-handle(hover) {
+			&:before {
+				width:150%;
+				height:150%;
+			}
+		}
+		@include s-range-style-handle(active) {
+			&:before {
+				width:400% !important;
+				height:400% !important;
+			}
+		}
+
+		@include s-range-style-handle-value() {
+			text-align:center;
+			font-weight:bolder;
+			color:white;
+			position:relative;
+			font-size: 0.6em;
+			@include s-transition(fast);
+		}
+
+		@include s-range-style-tooltip() {
+			color: white;
+			@include s-transition(fast);
+		}
+		@include s-range-style-tooltip(active) {
+			top:-15px;
+		}
+
+		.#{s-component()}-state-tap .#{s-component()}-origin {
+			@include s-transition(left fast, top fast);
+		}
+
+		@each $color in $colors {
+
+			[is="#{s-component()}"][color="#{$color}"] + [#{s-component()}-container] {
+
+				.#{s-component()}-base {
+					background:white;
+					border-radius: s-lnf(border-radius);
+					border:1px solid s-color($color, -opacity .2);
+
+					&:before {
+						background-color: s-color($color, -opacity .1);
+						border-radius: s-lnf(border-radius);
+					}
+				}
+
+				@include s-range-style-connect(
+					$state : hover,
+					$componentNameNest : false
+				) {
+					background-color: s-color($color, -opacity .3);
+				}
+
+				@include s-range-style-base(
+					$componentNameNest : false
+				) {
+					&:before {
+						background-color: white;
+					}
+				}
+
+				@include s-range-style-handle(
+					$componentNameNest : false
+				) {
+					background-color: s-color($color);
+
+					&:before {
+						background-color: s-color($color, -opacity .3);
+					}
+				}
+				@include s-range-style-handle(
+					$state : hover,
+					$componentNameNest : false
+				) {
+					background-color: s-color($color, -darken 10%);
+				}
+				@include s-range-style-handle(
+					$state : active,
+					$componentNameNest : false
+				) {
+					background-color: s-color($color, -darken 20%) !important;
+					@include s-depth(3, s-color($color, -opacity .3));
+
+					&:before {
+						background-color: s-color($color, -opacity .2);
+					}
+				}
+
+				@include s-range-style-handle-value(
+					$state : active,
+					$componentNameNest : false
+				) {
+					color: s-color($color, -darken 20%);
+				}
+
+				@include s-range-style-tooltip(
+					$componentNameNest : false
+				) {
+					@include s-bubble(
+						$side : bottom,
+						$align : center,
+						$size : 5px,
+						$color : #fff,
+						$arrow-offset : 0,
+						$border-width : 0,
+						$border-color : null
+					);
+					@include s-depth(3, rgba(0,0,0,.3));
+					color: s-color(text);
+				}
+			}
+		}
+
+		/* Base;
+		 *
+		 */
+		.#{s-component()}-pips,
+		.#{s-component()}-pips * {
+		}
+		.#{s-component()}-pips {
+			color: s-color(text);
+		}
+
+		/* Values;
+		 *
+		 */
+		.#{s-component()}-value {
+			font-size: .6em;
+			top:.6em;
+		}
+		.#{s-component()}-value-sub {
+			color: s-color(text, -opacity .5);
+			font-size: 10px;
+		}
+
+		/* Markings;
+		 *
+		 */
+		.#{s-component()}-marker {
+			background: s-color(text, -opacity .4);
+		}
+		.#{s-component()}-marker-sub {
+			background: s-color(text, -opacity .3);
+		}
+		.#{s-component()}-marker-large {
+			background: s-color(text, -opacity .6);
+		}
+
+		/* Horizontal layout;
+		 *
+		 */
+		.#{s-component()}-pips-horizontal {
+			margin-top:.6em;
+			height: 1.4em;
+		}
+		.#{s-component()}-value-horizontal {
+		}
+
+		.#{s-component()}-marker-horizontal.#{s-component()}-marker {
+			margin-left: -.5px;
+			width: 1px;
+			height: .2em;
+		}
+		.#{s-component()}-marker-horizontal.#{s-component()}-marker-sub {
+			height: .4em;
+		}
+		.#{s-component()}-marker-horizontal.#{s-component()}-marker-large {
+			height: .5em;
 		}
 	}
 }
