@@ -5,13 +5,13 @@
 		<img src="https://img.shields.io/travis/Coffeekraken/s-range-component.svg?style=flat-square" />
 	</a>
 	<a href="https://www.npmjs.com/package/coffeekraken-s-range-component">
-		<img src="https://img.shields.io/npm/v/coffeekraken-s-datepicker.svg?style=flat-square" />
+		<img src="https://img.shields.io/npm/v/coffeekraken-s-range-component.svg?style=flat-square" />
 	</a>
 	<a href="https://github.com/coffeekraken/s-range-component/blob/master/LICENSE.txt">
-		<img src="https://img.shields.io/npm/l/coffeekraken-s-datepicker.svg?style=flat-square" />
+		<img src="https://img.shields.io/npm/l/coffeekraken-s-range-component.svg?style=flat-square" />
 	</a>
 	<!-- <a href="https://github.com/coffeekraken/s-range-component">
-		<img src="https://img.shields.io/npm/dt/coffeekraken-s-datepicker.svg?style=flat-square" />
+		<img src="https://img.shields.io/npm/dt/coffeekraken-s-range-component.svg?style=flat-square" />
 	</a>
 	<a href="https://github.com/coffeekraken/s-range-component">
 		<img src="https://img.shields.io/github/forks/coffeekraken/s-range-component.svg?style=social&label=Fork&style=flat-square" />
