@@ -1,6 +1,6 @@
 {
   "name": "coffeekraken-s-range-component",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Nice, easy to use, customizable and fully featured range webcomponent.",
   "main": "dist/index.js",
   "homepage": "http://coffeekraken.io",
@@ -46,7 +46,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "coffeekraken-sugar": "^0.0.2",
+    "coffeekraken-sugar": "^1.0.0",
     "nouislider": "^8.0.0"
   },
   "devDependencies": {
