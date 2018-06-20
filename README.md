@@ -1,9 +1,9 @@
 # Coffeekraken s-range-component <img src=".resources/coffeekraken-logo.jpg" height="25px" />
 
 <p>
-	<a href="https://travis-ci.org/Coffeekraken/s-range-component">
+	<!-- <a href="https://travis-ci.org/Coffeekraken/s-range-component">
 		<img src="https://img.shields.io/travis/Coffeekraken/s-range-component.svg?style=flat-square" />
-	</a>
+	</a> -->
 	<a href="https://www.npmjs.com/package/coffeekraken-s-range-component">
 		<img src="https://img.shields.io/npm/v/coffeekraken-s-range-component.svg?style=flat-square" />
 	</a>
@@ -61,9 +61,8 @@ import SRangeComponent from 'coffeekraken-s-range-component'
 Then simply use it inside your html like so:
 
 ```html
-<input type="text" is="s-range" min="0" max="50" value="20" />
-<input type="text" is="s-range" min="20" max="50" value="20,34" />
-<input type="text" is="s-range" min="0" max="1000" value="400" step="10" />
+<s-range for="my-input-1" min="0" max="200"></s-range>
+<input type="text" value="120" id="my-input-1" />
 ```
 
 <a id="readme-browsers-support"></a>
