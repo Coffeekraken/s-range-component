@@ -25,53 +25,59 @@
 
 	@include s-component('s-range') {
 
-		#{s-range-selector()} {
-			padding-top:.5em;
-			padding-bottom:.5em;
+		.#{s-component()}-target {
+			display: block;
+			height: .5em;
+			background: yellow;
+			border: none;
+			border-radius: .25em;
+			box-shadow: none;
+		}
 
-			.#{s-component()}-base {
-				position: relative;
-				height: $h;
+		.#{s-component()}-handle {
+			width: 1em !important; height: 1em !important;
+			top: -.25em !important; left: auto !important;
+			right: -.5em !important;
+			background: red;
+			border: none;
+			outline: none;
+			box-shadow: none;
+			border-radius: 0;
+			cursor: pointer;
 
-				&:before {
-					display:block;
-					content:'';
-					width:100%; height:100%;
-					background: white;
-					position:absolute;
-					top:0; left:0;
-					z-index:-1;
-				}
+			&:after,
+			&:before {
+				display:none;
+			}
+
+			.#{s-component()}-tooltip {
+				opacity: 0;
+				@include s-translate(-50%,20%);
+				pointer-events: none;
+				@include s-transition(fast);
+			}
+			&.#{s-component()}-active .#{s-component()}-tooltip,
+			&:hover > .#{s-component()}-tooltip {
+				opacity: 1;
+				@include s-translate(-50%,0);
 			}
 		}
 
-		@include s-range-style-container() {
-			margin-left: $h;
-			margin-right: $h;
-			cursor:pointer;
+		.#{s-component()}-tooltip {
+			border-radius: 0;
+			border: none;
+			color: s-color(text);
+			background: none;
 		}
 
-		@include s-range-style-tooltip() {
-			font-size:1rem !important;
-			padding:s-lnf(padding-horizontal) s-lnf(padding-vertical);
-			border-radius: s-lnf(border-radius);
+		.#{s-component()}-connect {
+			background: green;
 		}
 
-		@include s-range-style-handle() {
-			width : $h * 2;
-			height : $h * 2;
-			border-radius: 50%;
-			@include s-translate(-50%, -25%);
-		}
-		@include s-range-style-handle(active) {
-			width: $h;
-			height: $h;
-			@include s-translate(-50%, 0);
+		.#{s-component()}-connects {
+			border-radius: 0;
 		}
 
-		@include s-range-style-handle-value(active) {
-			font-size:0;
-		}
 	}
 }
 
@@ -90,205 +96,67 @@
 
 	@include s-component('s-range') {
 
-		@include s-range-style-base() {
-			border-radius: s-lnf(border-radius);
-			&:before {
-				border-radius: s-lnf(border-radius);
-				@include s-transition(fast background-color);
-			}
-		}
+		.#{s-component()}-handle {
+			border-radius: .5em;
+			transition: transform .1s ease-in-out 0s;
 
-		@include s-range-style-connect() {
-			border-radius: s-lnf(border-radius);
-			@include s-transition(fast background-color);
-		}
-
-		@include s-range-style-handle() {
-			@include s-transition(fast);
-
-			&:before {
+			&:before,
+			&:after {
 				content:'';
 				display:block;
-				width:100%;
-				height:100%;
+				width:100%; height:100%;
+				border-radius:50%;
 				position:absolute;
-				top:50%; left:50%;
-				@include s-translate(-50%,-50%);
-				border-radius: 50%;
+				top: 0; left: 0;
 				@include s-transition(fast);
 			}
-		}
-		@include s-range-style-handle(hover) {
-			&:before {
-				width:150%;
-				height:150%;
+
+			&:hover,
+			&.#{s-component()}-active {
+
+				&:after {
+					transform: scale(0.7,0.7);
+				}
+				&:before {
+					transform: scale(3,3);
+				}
 			}
 		}
-		@include s-range-style-handle(active) {
-			&:before {
-				width:400% !important;
-				height:400% !important;
-			}
+
+		.#{s-component()}-tooltip {
+			background: white;
+			@include s-depth(2);
+			border-radius: .2em;
 		}
 
-		@include s-range-style-handle-value() {
-			text-align:center;
-			font-weight:bolder;
-			color:white;
-			position:relative;
-			font-size: 0.6em;
-			@include s-transition(fast);
-		}
-
-		@include s-range-style-tooltip() {
-			color: white;
-			@include s-transition(fast);
-		}
-		@include s-range-style-tooltip(active) {
-			top:-15px;
-		}
-
-		.#{s-component()}-state-tap .#{s-component()}-origin {
-			@include s-transition(left fast, top fast);
+		.#{s-component()}-connects {
+			border-radius: .25em;
 		}
 
 		@each $color in $colors {
 
-			[is="#{s-component()}"][color="#{$color}"] + [#{s-component()}-container] {
+			$sel : '[color="#{$color}"]';
+			@if $color == default {
+				$sel : '';
+			}
 
-				.#{s-component()}-base {
-					background:white;
-					border-radius: s-lnf(border-radius);
-					border:1px solid s-color($color, -opacity .2);
+			.#{s-component()}-target#{$sel} {
+				background: s-color($color, -opacity .2);
 
-					&:before {
-						background-color: s-color($color, -opacity .1);
-						border-radius: s-lnf(border-radius);
+				.#{s-component()}-connect {
+					background: s-color($color);
+				}
+				.#{s-component()}-handle {
+					background: rgba(0,0,0,0);
+
+					&:after {
+						background: s-color($color);
 					}
-				}
-
-				@include s-range-style-connect(
-					$state : hover,
-					$componentNameNest : false
-				) {
-					background-color: s-color($color, -opacity .3);
-				}
-
-				@include s-range-style-base(
-					$componentNameNest : false
-				) {
 					&:before {
-						background-color: white;
+						background: s-color($color, -opacity .2);
 					}
-				}
-
-				@include s-range-style-handle(
-					$componentNameNest : false
-				) {
-					background-color: s-color($color);
-
-					&:before {
-						background-color: s-color($color, -opacity .3);
-					}
-				}
-				@include s-range-style-handle(
-					$state : hover,
-					$componentNameNest : false
-				) {
-					background-color: s-color($color, -darken 10%);
-				}
-				@include s-range-style-handle(
-					$state : active,
-					$componentNameNest : false
-				) {
-					background-color: s-color($color, -darken 20%) !important;
-					@include s-depth(3, s-color($color, -opacity .3));
-
-					&:before {
-						background-color: s-color($color, -opacity .2);
-					}
-				}
-
-				@include s-range-style-handle-value(
-					$state : active,
-					$componentNameNest : false
-				) {
-					color: s-color($color, -darken 20%);
-				}
-
-				@include s-range-style-tooltip(
-					$componentNameNest : false
-				) {
-					@include s-bubble(
-						$side : bottom,
-						$align : center,
-						$size : 5px,
-						$color : #fff,
-						$arrow-offset : 0,
-						$border-width : 0,
-						$border-color : null
-					);
-					@include s-depth(3, rgba(0,0,0,.3));
-					color: s-color(text);
 				}
 			}
-		}
-
-		/* Base;
-		 *
-		 */
-		.#{s-component()}-pips,
-		.#{s-component()}-pips * {
-		}
-		.#{s-component()}-pips {
-			color: s-color(text);
-		}
-
-		/* Values;
-		 *
-		 */
-		.#{s-component()}-value {
-			font-size: .6em;
-			top:.6em;
-		}
-		.#{s-component()}-value-sub {
-			color: s-color(text, -opacity .5);
-			font-size: 10px;
-		}
-
-		/* Markings;
-		 *
-		 */
-		.#{s-component()}-marker {
-			background: s-color(text, -opacity .4);
-		}
-		.#{s-component()}-marker-sub {
-			background: s-color(text, -opacity .3);
-		}
-		.#{s-component()}-marker-large {
-			background: s-color(text, -opacity .6);
-		}
-
-		/* Horizontal layout;
-		 *
-		 */
-		.#{s-component()}-pips-horizontal {
-			margin-top:.6em;
-			height: 1.4em;
-		}
-		.#{s-component()}-value-horizontal {
-		}
-
-		.#{s-component()}-marker-horizontal.#{s-component()}-marker {
-			margin-left: -.5px;
-			width: 1px;
-			height: .2em;
-		}
-		.#{s-component()}-marker-horizontal.#{s-component()}-marker-sub {
-			height: .4em;
-		}
-		.#{s-component()}-marker-horizontal.#{s-component()}-marker-large {
-			height: .5em;
 		}
 	}
 }

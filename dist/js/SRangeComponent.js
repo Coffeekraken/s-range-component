@@ -1,14 +1,18 @@
+'use strict';
+
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _SInputWebComponent2 = require('coffeekraken-sugar/js/core/SInputWebComponent');
+var _SWebComponent2 = require('coffeekraken-sugar/js/core/SWebComponent');
 
-var _SInputWebComponent3 = _interopRequireDefault(_SInputWebComponent2);
+var _SWebComponent3 = _interopRequireDefault(_SWebComponent2);
 
 var _throttle = require('coffeekraken-sugar/js/utils/functions/throttle');
 
@@ -30,6 +34,10 @@ var _autoCast = require('coffeekraken-sugar/js/utils/string/autoCast');
 
 var _autoCast2 = _interopRequireDefault(_autoCast);
 
+var _wnumb = require('wnumb');
+
+var _wnumb2 = _interopRequireDefault(_wnumb);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -40,19 +48,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @name 		SRangeComponent
- * @extends 	SInputWebComponent
+ * @extends 	SWebComponent
  * Nice, easy to use, customizable and fully featured range webcomponent.
  *
  * @example 	html
- * <input type="text" is="s-range" min="0" max="50" value="20" />
- * <input type="text" is="s-range" min="20" max="50" value="20,34" />
- * <input type="text" is="s-range" min="0" max="1000" value="400" step="10" />
+ * <input type="text" value="20" name="my-cool-input" />
+ * <s-range for="my-cool-input" min="0" max="50"></s-range>
  *
  * @author 		Olivier Bossel <olivier.bossel@gmail.com>
  */
-
-var SRangeComponent = function (_SInputWebComponent) {
-	_inherits(SRangeComponent, _SInputWebComponent);
+var SRangeComponent = function (_SWebComponent) {
+	_inherits(SRangeComponent, _SWebComponent);
 
 	function SRangeComponent() {
 		_classCallCheck(this, SRangeComponent);
@@ -74,43 +80,24 @@ var SRangeComponent = function (_SInputWebComponent) {
 
 			_get(SRangeComponent.prototype.__proto__ || Object.getPrototypeOf(SRangeComponent.prototype), 'componentMount', this).call(this);
 
-			// default formatter
-			this._formatter = function (value, destination) {
-				return value;
-			};
-
-			// manage the formatter setting
-			if (this.props.formatter) {
-				if (typeof this.props.formatter === 'string') {
-					if (!SRangeComponent._formatters[this.props.formatter]) {
-						throw 'The formatter "' + this.props.formatter + '" does not exist. Make sure to register if through the static method SRangeComponent.registerFormater. Here\'s the available formatters : ' + Object.keys(SRangeComponent._formatters).join(',');
-					}
-					this._formatter = SRangeComponent._formatters[this.props.formatter].bind(this);
-				} else if (typeof this.props.formatter === 'function') {
-					this._formatter = this.props.formatter.bind(this);
-				}
+			// get the attached input
+			if (this.props.for instanceof HTMLElement) {
+				this._inputElm = this.props.for;
+			} else if (typeof this.props.for === 'string') {
+				this._inputElm = document.querySelector('#' + this.props.for + ', [name="' + this.props.for + '"]');
 			}
 
-			// keep input
-			if (this.props.keepInput) this.classList.add(this._componentNameDash + '-keep-input');
-
-			// create the container for the slider
-			this.container = document.createElement('div');
-			this.container.setAttribute(this._componentNameDash + '-container', true);
-			// this.container.setAttribute('class', this.className);
-
-			// range element
-			this.rangeElm = document.createElement('div');
-			this.container.appendChild(this.rangeElm);
-
-			var start = [this.props.value || this.props.min || 0];
-			if (this.props.value) {
-				start = this.props.value.toString().split(',');
+			var inputValue = null;
+			if (this._inputElm && this._inputElm.hasAttribute('value')) {
+				inputValue = this._inputElm.getAttribute('value');
 			}
+
+			var start = [this.props.value || inputValue || this.props.min || 0];
+			start = start.toString().split(':');
 
 			var connect = this.props.connect;
 			if (start.length < 2 && connect !== false) {
-				connect = 'lower';
+				connect = [true, false];
 			} else if (connect === null) {
 				connect = false;
 			}
@@ -124,8 +111,11 @@ var SRangeComponent = function (_SInputWebComponent) {
 					min: this.props.min || 0,
 					max: this.props.max || 100
 				},
-				pips: this.props.pips,
-				cssPrefix: this._componentNameDash + '-'
+				cssPrefix: this._componentNameDash + '-',
+				format: (0, _wnumb2.default)(_extends({
+					decimals: 0
+				}, this.props.format)),
+				tooltips: this.props.tooltips
 			};
 
 			if (this.props.margin) {
@@ -137,41 +127,7 @@ var SRangeComponent = function (_SInputWebComponent) {
 			if (this.props.step) {
 				args.step = this.props.step;
 			}
-			this.slider = _nouislider2.default.create(this.rangeElm, args);
-
-			// remove the noUi-background class on the main element
-			this.rangeElm.classList.remove(this._componentNameDash + '-background');
-
-			// query references
-			this.handleStartElm = this.container.querySelector('.' + this._componentNameDash + '-origin:first-of-type .' + this._componentNameDash + '-handle');
-			this.handleEndElm = this.container.querySelector('.' + this._componentNameDash + '-origin:last-of-type .' + this._componentNameDash + '-handle');
-			if (this.handleStartElm === this.handleEndElm) this.handleEndElm = null;
-			this.connectElm = this.container.querySelector('.' + this._componentNameDash + '-connect');
-			this.baseElm = this.container.querySelector('.' + this._componentNameDash + '-base');
-
-			// create handleValueElm
-			if (this.handleStartElm) {
-				this.handleStartValueElm = document.createElement('div');
-				this.handleStartValueElm.classList.add(this._componentNameDash + '-handle__value');
-				this.handleStartElm.appendChild(this.handleStartValueElm);
-			}
-			if (this.handleEndElm) {
-				this.handleEndValueElm = document.createElement('div');
-				this.handleEndValueElm.classList.add(this._componentNameDash + '-handle__value');
-				this.handleEndElm.appendChild(this.handleEndValueElm);
-			}
-
-			// create new noUi-background${this._componentNameDash}-origin for the lower background
-			this.backgroundLowerElm = document.createElement('div');
-			this.backgroundLowerElm.classList.add(this._componentNameDash + '-origin');
-			this.backgroundLowerElm.classList.add(this._componentNameDash + '-background');
-			this.backgroundLowerElm.style.right = '100%';
-
-			// append the element to the base
-			this.baseElm.appendChild(this.backgroundLowerElm);
-
-			// init tooltip
-			if (this.props.tooltips) this._initTooltip();
+			this.slider = _nouislider2.default.create(this, args);
 
 			// keep track of busy status
 			this.slider.on('start', function (e) {
@@ -189,9 +145,9 @@ var SRangeComponent = function (_SInputWebComponent) {
 			});
 
 			// handle change directly in the input
-			this.addEventListener('change', function (e) {
-				if (e instanceof CustomEvent) {} else {
-					var values = e.target.value.toString().split(',').map(function (value) {
+			if (this._inputElm) {
+				this._inputElm.addEventListener('change', function (e) {
+					var values = e.target.value.toString().split(':').map(function (value) {
 						return parseFloat(value);
 					});
 					values[0] = values[0] < _this2.props.min ? _this2.props.min : values[0] > _this2.props.max ? _this2.props.max : values[0] || _this2.props.min;
@@ -199,40 +155,10 @@ var SRangeComponent = function (_SInputWebComponent) {
 						values[1] = values[1] < _this2.props.min ? _this2.props.min : values[1] > _this2.props.max ? _this2.props.max : values[1] || _this2.props.max;
 					}
 					_this2.slider.set(values);
-					e.target.value = values.join(',');
-					e.target.setAttribute('value', values.join(','));
-				}
-			});
-
-			// throttled update
-			var _throttledUpdateFn = null;
-			if (this.props.updateInterval) {
-				_throttledUpdateFn = (0, _throttle2.default)(function () {
-					_this2._updateAttributeValue();
-				}, this.props.updateInterval);
+					e.target.value = values.join(':');
+					e.target.setAttribute('value', values.join(':'));
+				});
 			}
-
-			// listen for update in slider
-			this.slider.on('update', function (e) {
-				// update values
-				_this2._boundValuesInHtml();
-				// check if need to update
-				if (_throttledUpdateFn) _throttledUpdateFn();
-			});
-
-			// do not animate anything at start
-			this.container.classList.add('clear-transmations'); // do not animate anything at initialisation
-
-			// append the slider into the dom
-			(0, _insertAfter2.default)(this.container, this);
-
-			// remove the no-transmations class to let animations do their job
-			setTimeout(function () {
-				_this2.container.classList.remove('clear-transmations');
-			});
-
-			// set values first time
-			this._boundValuesInHtml();
 		}
 
 		/**
@@ -244,17 +170,7 @@ var SRangeComponent = function (_SInputWebComponent) {
 	}, {
 		key: 'componentWillReceiveProp',
 		value: function componentWillReceiveProp(name, newVal, oldVal) {
-			switch (name) {
-				case 'value':
-					if (!newVal) newVal = this.props.min;
-					// set the new values to the slider
-					// but this, only if the slider is not
-					// busy, mean that the user is using it
-					if (!this._busy) {
-						this.slider.set(newVal.toString().split(','));
-					}
-					break;
-			}
+			switch (name) {}
 		}
 
 		/**
@@ -264,89 +180,21 @@ var SRangeComponent = function (_SInputWebComponent) {
 	}, {
 		key: '_updateAttributeValue',
 		value: function _updateAttributeValue() {
-			var _this3 = this;
+			// do this only if we have a target input
+			if (!this._inputElm) return;
 
 			// set new value in attributes
 			var value = this.slider.get();
 			var newValue = value;
 			if (typeof value === 'number' || typeof value === 'string') {
-				newValue = this._formatter(value, 'input');
+				newValue = value;
 			} else {
-				newValue = this.slider.get().map(function (val) {
-					return _this3._formatter(val, 'input');
-				}).join(',');
+				newValue = this.slider.get().join(':');
 			}
 			// trigger a change event
-			this.setAttribute('value', newValue);
-			this.value = newValue;
-			(0, _dispatchEvent2.default)(this, 'change');
-		}
-	}, {
-		key: '_applyBackgroundLeft',
-		value: function _applyBackgroundLeft() {
-			if (!this.connectElm.style.left) {
-				setTimeout(this._applyBackgroundLeft.bind(this), 100);
-			} else {
-				this.backgroundLowerElm.style.right = 100 - parseInt(this.connectElm.style.left) + '%';
-			}
-		}
-
-		/**
-   * Set tooltip values
-   */
-
-	}, {
-		key: '_boundValuesInHtml',
-		value: function _boundValuesInHtml() {
-
-			var values = [].concat(this.slider.get());
-
-			// if we have 2 values
-			// we set the width of the ${this._componentNameDash}-target${this._componentNameDash}-background:before
-			// to the left percentage of the lower handle
-			if (values.length == 2) {
-				this._applyBackgroundLeft();
-			}
-
-			// handle values
-			if (this.handleStartValueElm && values[0] !== undefined) {
-				this.handleStartValueElm.innerHTML = this._formatter(values[0], 'handle', this);
-			}
-			if (this.handleEndValueElm && values[1] !== undefined) {
-				this.handleEndValueElm.innerHTML = this._formatter(values[1], 'handle', this);
-			}
-
-			// set tooltips
-			if (this.tooltipStartElm && values[0] !== undefined) {
-				this.tooltipStartElm.innerHTML = this._formatter(values[0], 'tooltip', this);
-			}
-			if (this.tooltipEndElm && values[1] !== undefined) {
-				this.tooltipEndElm.innerHTML = this._formatter(values[1], 'tooltip', this);
-			}
-		}
-
-		/**
-   * Init tooltip
-   */
-
-	}, {
-		key: '_initTooltip',
-		value: function _initTooltip() {
-			// append tooltip in the handles
-			if (this.handleStartElm) {
-				// generate html structure
-				var tooltipStartElm = document.createElement('div');
-				tooltipStartElm.classList.add(this._componentNameDash + '-tooltip');
-				this.handleStartElm.appendChild(tooltipStartElm);
-				this.tooltipStartElm = tooltipStartElm;
-			}
-			if (this.handleEndElm) {
-				// generate html structure
-				var tooltipEndElm = document.createElement('div');
-				tooltipEndElm.classList.add(this._componentNameDash + '-tooltip');
-				this.handleEndElm.appendChild(tooltipEndElm);
-				this.tooltipEndElm = tooltipEndElm;
-			}
+			this._inputElm.setAttribute('value', newValue);
+			this._inputElm.value = newValue;
+			(0, _dispatchEvent2.default)(this._inputElm, 'change');
 		}
 	}], [{
 		key: 'defaultCss',
@@ -358,7 +206,7 @@ var SRangeComponent = function (_SInputWebComponent) {
    * @protected
    */
 		value: function defaultCss(componentName, componentNameDash) {
-			return '\n\t\t\t[is="' + componentNameDash + '"]:not(.' + componentNameDash + '-keep-input) {\n\t\t\t\tposition: absolute;\n\t\t\t\tleft: -100vw;\n\t\t\t\topacity: 0;\n\t\t\t}\n\t\t\t/* Functional styling;\n\t\t\t * These styles are required for noUiSlider to function.\n\t\t\t * You don\'t need to change these rules to apply your design.\n\t\t\t */\n\t\t\t.' + componentNameDash + '-target,\n\t\t\t.' + componentNameDash + '-target * {\n\t\t\t\t-webkit-touch-callout: none;\n\t\t\t\t-webkit-user-select: none;\n\t\t\t\ttouch-action: none;\n\t\t\t\tuser-select: none;\n\t\t\t\tbox-sizing: border-box;\n\t\t\t}\n\t\t\t.' + componentNameDash + '-target {\n\t\t\t\tposition: relative;\n\t\t\t\tdirection: ltr;\n\t\t\t}\n\t\t\t.' + componentNameDash + '-base {\n\t\t\t\twidth: 100%;\n\t\t\t\theight: 100%;\n\t\t\t\tposition: relative;\n\t\t\t\tz-index: 1; /* Fix 401 */\n\t\t\t}\n\t\t\t.' + componentNameDash + '-background:before {\n\t\t\t\tcontent:\'\';\n\t\t\t\tdisplay:block;\n\t\t\t\tposition:absolute;\n\t\t\t\ttop:0; left:0;\n\t\t\t\twidth:100%; height:100%;\n\t\t\t\tborder-radius:0.05em;\n\t\t\t}\n\t\t\t.' + componentNameDash + '-origin {\n\t\t\t\tposition: absolute;\n\t\t\t\tright: 0;\n\t\t\t\ttop: 0;\n\t\t\t\tleft: 0;\n\t\t\t\tbottom: 0;\n\t\t\t}\n\t\t\t.' + componentNameDash + '-handle {\n\t\t\t\tposition: relative;\n\t\t\t\tz-index: 1;\n\t\t\t\ttext-align: center;\n\t\t\t\ttransform-origin:50% 50%;\n\t\t\t\tdisplay:inline-block;\n\t\t\t}\n\t\t\t.' + componentNameDash + '-tooltip {\n\t\t\t\tdisplay: inline-block;\n\t\t\t\tpointer-events:none;\n\t\t\t\tposition: absolute !important;\n\t\t\t\ttop:0; left:50%;\n\t\t\t\ttransform: translateX(-50%) translateY(-100%);\n\t\t\t\topacity: 0;\n\t\t\t}\n\t\t\t.' + componentNameDash + '-active .' + componentNameDash + '-tooltip {\n\t\t\t\topacity:1;\n\t\t\t}\n\t\t\t.' + componentNameDash + '-stacking .' + componentNameDash + '-handle {\n\t\t\t/* This class is applied to the lower origin when\n\t\t\t   its values is > 50%. */\n\t\t\t\tz-index: 10;\n\t\t\t}\n\t\t\t.' + componentNameDash + '-state-drag * {\n\t\t\t\tcursor: inherit !important;\n\t\t\t}\n\n\t\t\t/* Painting and performance;\n\t\t\t * Browsers can paint handles in their own layer.\n\t\t\t */\n\t\t\t.' + componentNameDash + '-base,\n\t\t\t.' + componentNameDash + '-handle {\n\t\t\t\ttransform: translate3d(0,0,0);\n\t\t\t}\n\n\t\t\t/* Handles and cursors;\n\t\t\t */\n\t\t\t.' + componentNameDash + '-draggable {\n\t\t\t\tcursor: w-resize;\n\t\t\t}\n\t\t\t.' + componentNameDash + '-vertical .' + componentNameDash + '-draggable {\n\t\t\t\tcursor: n-resize;\n\t\t\t}\n\n\t\t\t.' + componentNameDash + '-handle__value {\n\t\t\t\tposition:relative;\n\t\t\t\ttop:50%; left:50%;\n\t\t\t\ttransform: translateX(-50%) translateY(-50%);\n\t\t\t}\n\n\t\t\t.' + componentNameDash + '-pips,\n\t\t\t.' + componentNameDash + '-pips * {\n\t\t\t-moz-box-sizing: border-box;\n\t\t\t\tbox-sizing: border-box;\n\t\t\t}\n\t\t\t.' + componentNameDash + '-pips {\n\t\t\t\tposition: relative;\n\t\t\t}\n\n\t\t\t/* Values;\n\t\t\t *\n\t\t\t */\n\t\t\t.' + componentNameDash + '-value {\n\t\t\t\tposition: absolute;\n\t\t\t\ttext-align: center;\n\t\t\t}\n\n\t\t\t/* Markings;\n\t\t\t *\n\t\t\t */\n\t\t\t.' + componentNameDash + '-marker {\n\t\t\t\tposition: absolute;\n\t\t\t}\n\n\t\t\t/* Horizontal layout;\n\t\t\t *\n\t\t\t */\n\t\t\t.' + componentNameDash + '-pips-horizontal {\n\t\t\t\ttop: 100%;\n\t\t\t\tleft: 0;\n\t\t\t\twidth: 100%;\n\t\t\t}\n\t\t\t.' + componentNameDash + '-value-horizontal {\n\t\t\t\t-webkit-transform: translate3d(-50%,50%,0);\n\t\t\t\ttransform: translate3d(-50%,50%,0);\n\t\t\t}\n\t\t';
+			return '\n\t\t/*! nouislider - 11.1.0 - 2018-04-02 11:18:13 */.s-range-target,.s-range-target *{-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;-ms-touch-action:none;touch-action:none;-ms-user-select:none;-moz-user-select:none;user-select:none;-moz-box-sizing:border-box;box-sizing:border-box}.s-range-target{position:relative;direction:ltr}.s-range-base,.s-range-connects{width:100%;height:100%;position:relative;z-index:1}.s-range-connects{overflow:hidden;z-index:0}.s-range-connect,.s-range-origin{will-change:transform;position:absolute;z-index:1;top:0;left:0;height:100%;width:100%;-ms-transform-origin:0 0;-webkit-transform-origin:0 0;transform-origin:0 0}html:not([dir=rtl]) .s-range-horizontal .s-range-origin{left:auto;right:0}.s-range-vertical .s-range-origin{width:0}.s-range-horizontal .s-range-origin{height:0}.s-range-handle{position:absolute}.s-range-state-tap .s-range-connect,.s-range-state-tap .s-range-origin{-webkit-transition:transform .3s;transition:transform .3s}.s-range-state-drag *{cursor:inherit!important}.s-range-horizontal{height:18px}.s-range-horizontal .s-range-handle{width:34px;height:28px;left:-17px;top:-6px}.s-range-vertical{width:18px}.s-range-vertical .s-range-handle{width:28px;height:34px;left:-6px;top:-17px}html:not([dir=rtl]) .s-range-horizontal .s-range-handle{right:-17px;left:auto}.s-range-target{background:#FAFAFA;border-radius:4px;border:1px solid #D3D3D3;box-shadow:inset 0 1px 1px #F0F0F0,0 3px 6px -5px #BBB}.s-range-connects{border-radius:3px}.s-range-connect{background:#3FB8AF}.s-range-draggable{cursor:ew-resize}.s-range-vertical .s-range-draggable{cursor:ns-resize}.s-range-handle{border:1px solid #D9D9D9;border-radius:3px;background:#FFF;cursor:default;box-shadow:inset 0 0 1px #FFF,inset 0 1px 7px #EBEBEB,0 3px 6px -3px #BBB}.s-range-active{box-shadow:inset 0 0 1px #FFF,inset 0 1px 7px #DDD,0 3px 6px -3px #BBB}.s-range-handle:after,.s-range-handle:before{content:"";display:block;position:absolute;height:14px;width:1px;background:#E8E7E6;left:14px;top:6px}.s-range-handle:after{left:17px}.s-range-vertical .s-range-handle:after,.s-range-vertical .s-range-handle:before{width:14px;height:1px;left:6px;top:14px}.s-range-vertical .s-range-handle:after{top:17px}[disabled] .s-range-connect{background:#B8B8B8}[disabled] .s-range-handle,[disabled].s-range-handle,[disabled].s-range-target{cursor:not-allowed}.s-range-pips,.s-range-pips *{-moz-box-sizing:border-box;box-sizing:border-box}.s-range-pips{position:absolute;color:#999}.s-range-value{position:absolute;white-space:nowrap;text-align:center}.s-range-value-sub{color:#ccc;font-size:10px}.s-range-marker{position:absolute;background:#CCC}.s-range-marker-large,.s-range-marker-sub{background:#AAA}.s-range-pips-horizontal{padding:10px 0;height:80px;top:100%;left:0;width:100%}.s-range-value-horizontal{-webkit-transform:translate(-50%,50%);transform:translate(-50%,50%)}.s-range-rtl .s-range-value-horizontal{-webkit-transform:translate(50%,50%);transform:translate(50%,50%)}.s-range-marker-horizontal.s-range-marker{margin-left:-1px;width:2px;height:5px}.s-range-marker-horizontal.s-range-marker-sub{height:10px}.s-range-marker-horizontal.s-range-marker-large{height:15px}.s-range-pips-vertical{padding:0 10px;height:100%;top:0;left:100%}.s-range-value-vertical{-webkit-transform:translate(0,-50%);transform:translate(0,-50%,0);padding-left:25px}.s-range-rtl .s-range-value-vertical{-webkit-transform:translate(0,50%);transform:translate(0,50%)}.s-range-marker-vertical.s-range-marker{width:5px;height:2px;margin-top:-1px}.s-range-marker-vertical.s-range-marker-sub{width:10px}.s-range-marker-vertical.s-range-marker-large{width:15px}.s-range-tooltip{display:block;position:absolute;border:1px solid #D9D9D9;border-radius:3px;background:#fff;color:#000;padding:5px;text-align:center;white-space:nowrap}.s-range-horizontal .s-range-tooltip{-webkit-transform:translate(-50%,0);transform:translate(-50%,0);left:50%;bottom:120%}.s-range-vertical .s-range-tooltip{-webkit-transform:translate(0,-50%);transform:translate(0,-50%);top:50%;right:120%}\n\t\t';
 		}
 
 		/**
@@ -376,14 +224,15 @@ var SRangeComponent = function (_SInputWebComponent) {
    * @definition 		SWebComponent.defaultProps
    * @protected
    */
-
-
-		/**
-   * Store the formatters functions
-   * @type 	{Object}
-   */
 		get: function get() {
 			return {
+
+				/**
+     * Specify an input to bind the range value to. This works the same way as the "for" attribute of a label.
+     * @prop
+     * @type 		{String}
+     */
+				for: null,
 
 				/**
      * Specify the minimum value of the range.
@@ -421,29 +270,6 @@ var SRangeComponent = function (_SInputWebComponent) {
 				limit: null,
 
 				/**
-     * Specify the range direction. Support "rtl" and "ltr"
-     * @prop
-     * @values 	rtl | ltr
-     * @type 	{String}
-     */
-				direction: 'ltr',
-
-				/**
-     * Specify if need to keep the input displayed or not
-     * @prop
-     * @type 	{Boolean}
-     */
-				keepInput: false,
-
-				/**
-     * Specify if need to display a tooltip that follows the handles when sliding them.
-     * The value of this can be specified through the formatter. See the formatter doc for more info.
-     * @prop
-     * @type 	{Boolean}
-     */
-				tooltips: true,
-
-				/**
      * When using two handles, specify if these two have to be linked visually or not
      * @prop
      * @type 	{Boolean}
@@ -451,31 +277,18 @@ var SRangeComponent = function (_SInputWebComponent) {
 				connect: true,
 
 				/**
-     * Specify the value of the range. If using two handles, need to be specified like "firstValue,secondValue" (comma separated)
+     * Display or not the tooltips
+     * @prop
+     * @type 	{Boolean}
+     */
+				tooltips: true,
+
+				/**
+     * Specify the value of the range. If using two handles, need to be specified like "firstValue:secondValue" (double points separated)
      * @prop
      * @type 	{Number|String}
      */
 				value: null,
-
-				/**
-     * Specify a formatter function or a registered formatter name to display the values at a specific target point in the range like "input", "tooltip" and "handle"
-     * This function will receive these parameters:
-     * 1. ```value``` : The value to format
-     * 2. ```target``` : The target where the value will be displayed like "input", "tooltip" or "handle"
-     * This function has to return the formatted value.
-     * > Do not declare this function with the "=>" function syntax otherwise your "this" context will not point to the actual component instance...
-     * @prop
-     * @type 	{Function|String}
-     */
-				formatter: null,
-
-				/**
-     * Specify the registered sugar color to use for the range
-     * @prop
-     * @physicalProps
-     * @type 	{String}
-     */
-				color: 'default',
 
 				/**
      * Specify the time interval between actual input value updates
@@ -485,62 +298,21 @@ var SRangeComponent = function (_SInputWebComponent) {
 				updateInterval: null,
 
 				/**
-     * Specify if and how to display the pips
-     * - ```density``` : 	The density of pips to have. Lower means that you will have more...
-     * - ```mode``` : The mode to use to draw pips. Possible values are :
-     * 	1. **range** : Use the range slider property to draw the pips
-     * 	2. **positions** : Use an array of positions percentage based by setting the ```values``` property
-     * 	3. **count** : Use to specify a number of pips to draw by setting the ```values``` property
-     * 	4. **values** : Set specify values where you want a pip to be drawed by settings the ```values``` property
-     *
-     * @example 	js
-     * // positions
-     * {
-     * 	mode : 'positions',
-     * 	values : [0,25,50,75,100]
-     * }
-     * // count
-     * {
-     * 	mode : 'count',
-     * 	values : 5
-     * }
-     * // etc...
-     *
+     * Specify how to format the output number(s). You need to pass a [wNumb configuration object](https://refreshless.com/wnumb/)
      * @prop
-     * @type 	{Object}
+     * @type  	{Object}
      */
-				pips: null
+				format: {}
 			};
 		}
-
-		/**
-   * Register a new formatter
-   * @param 		{String} 		name 		The formatter name
-   * @param 		{Function} 		formatter 	The formatter function
-   */
-
 	}, {
 		key: 'physicalProps',
 		get: function get() {
-			return ['color'];
+			return [];
 		}
 	}]);
 
 	return SRangeComponent;
-}(_SInputWebComponent3.default);
-
-SRangeComponent._formatters = {
-
-	// round the value
-	rounded: function rounded(value, target) {
-		return Math.round(value);
-	}
-};
-
-SRangeComponent.registerFormatter = function (name, fn) {
-	if (typeof name !== 'string') throw 'The name parameter has to be a String';
-	if (typeof fn !== 'function') throw 'The formatter parameter has be a function';
-	SRangeComponent._formatters[name] = fn;
-};
+}(_SWebComponent3.default);
 
 exports.default = SRangeComponent;
