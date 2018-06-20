@@ -242,22 +242,3 @@
 		}
 	}
 }
-@mixin _s-range-style-tooltip(
-	$state : null
-) {
-	@include s-component('s-range') {
-		@if not $state {
-			.#{s-component()}-handle .#{s-component()}-tooltip {
-				@content;
-			}
-		} @else if $state == hover {
-			.#{s-component()}-handle:hover .#{s-component()}-tooltip {
-				@content;
-			}
-		} @else if $state == active {
-			.#{s-component()}-active .#{s-component()}-tooltip {
-				@content;
-			}
-		}
-	}
-}
