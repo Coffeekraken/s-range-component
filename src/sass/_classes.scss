@@ -89,11 +89,6 @@
 	$colors : default primary secondary
 ) {
 
-	// parse properties
-	@if $_sugar-test-arguments {
-		// $colors : s-test-argument('s-range-style','colors',map-keys(s-setting('colors')),$colors);
-	}
-
 	@include s-component('s-range') {
 
 		.#{s-component()}-handle {
